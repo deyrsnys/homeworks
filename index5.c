@@ -1,7 +1,8 @@
-﻿/*
+/*
 Float
 Колчин, 171
 */
+
 #include <stdio.h>
 #include <math.h>
 #include <conio.h>
