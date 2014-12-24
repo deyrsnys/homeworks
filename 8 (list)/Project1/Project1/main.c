@@ -1,10 +1,15 @@
+/*
+РћРґРЅРѕСЃРІСЏР·РЅС‹Р№ СЃРїРёСЃРѕРє
+РљРѕР»С‡РёРЅ, 171
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "spisok.h"
 
-void print_menu()											//печать меню
+void print_menu()											//ГЇГҐГ·Г ГІГј Г¬ГҐГ­Гѕ
 {
 	printf("########### MENU ###########\n");
 	printf("# a <int> - add new number #\n");
@@ -18,63 +23,63 @@ void print_menu()											//печать меню
 
 void main()
 {
-	Spisok *spisok = Spisok_init();					//создаем список
-	while (1)										//повторяем цикл всегда
+	Spisok *spisok = Spisok_init();					//Г±Г®Г§Г¤Г ГҐГ¬ Г±ГЇГЁГ±Г®ГЄ
+	while (1)										//ГЇГ®ГўГІГ®Г°ГїГҐГ¬ Г¶ГЁГЄГ« ГўГ±ГҐГЈГ¤Г 
 	{
-		char kommand_str[30];						//командная строка
-		char kommand;								//команда из командной строки
-		int value = 0;								//число для команд 'a' и 'r'
-		int kod = 0;								//позиция ошибки при преобразовании value из string в int
-		short bad_command = 0;						//правильно ли составлена команда
+		char kommand_str[30];						//ГЄГ®Г¬Г Г­Г¤Г­Г Гї Г±ГІГ°Г®ГЄГ 
+		char kommand;								//ГЄГ®Г¬Г Г­Г¤Г  ГЁГ§ ГЄГ®Г¬Г Г­Г¤Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
+		int value = 0;								//Г·ГЁГ±Г«Г® Г¤Г«Гї ГЄГ®Г¬Г Г­Г¤ 'a' ГЁ 'r'
+		int kod = 0;								//ГЇГ®Г§ГЁГ¶ГЁГї Г®ГёГЁГЎГЄГЁ ГЇГ°ГЁ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГЁ value ГЁГ§ string Гў int
+		short bad_command = 0;						//ГЇГ°Г ГўГЁГ«ГјГ­Г® Г«ГЁ Г±Г®Г±ГІГ ГўГ«ГҐГ­Г  ГЄГ®Г¬Г Г­Г¤Г 
 		print_menu();
-		gets(kommand_str);							//получаем командную строку
-		kommand = kommand_str[0];					//первый элемент строки используем как команду
-		if ((kommand != 'a') && (kommand != 'r') && (kommand != 'p') && (kommand != 'q'))		//если команда не в списке 'a''r''p''q'
-			bad_command = 1;															//она неправильная
-		if (((kommand == 'p') || (kommand == 'q')) && (strlen(kommand_str) != 1))				//если после команд 'p' 'q' в строке ещё что-то, то срока не верна
+		gets(kommand_str);							//ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЄГ®Г¬Г Г­Г¤Г­ГіГѕ Г±ГІГ°Г®ГЄГі
+		kommand = kommand_str[0];					//ГЇГҐГ°ГўГ»Г© ГЅГ«ГҐГ¬ГҐГ­ГІ Г±ГІГ°Г®ГЄГЁ ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГ¬ ГЄГ ГЄ ГЄГ®Г¬Г Г­Г¤Гі
+		if ((kommand != 'a') && (kommand != 'r') && (kommand != 'p') && (kommand != 'q'))		//ГҐГ±Г«ГЁ ГЄГ®Г¬Г Г­Г¤Г  Г­ГҐ Гў Г±ГЇГЁГ±ГЄГҐ 'a''r''p''q'
+			bad_command = 1;															//Г®Г­Г  Г­ГҐГЇГ°Г ГўГЁГ«ГјГ­Г Гї
+		if (((kommand == 'p') || (kommand == 'q')) && (strlen(kommand_str) != 1))				//ГҐГ±Г«ГЁ ГЇГ®Г±Г«ГҐ ГЄГ®Г¬Г Г­Г¤ 'p' 'q' Гў Г±ГІГ°Г®ГЄГҐ ГҐГ№Вё Г·ГІГ®-ГІГ®, ГІГ® Г±Г°Г®ГЄГ  Г­ГҐ ГўГҐГ°Г­Г 
 			bad_command = 1;
-		if (((kommand == 'a') || (kommand == 'r')) && (kommand_str[1] != ' '))				//если после 'a' 'r'  нет пробела, то команда не верна
+		if (((kommand == 'a') || (kommand == 'r')) && (kommand_str[1] != ' '))				//ГҐГ±Г«ГЁ ГЇГ®Г±Г«ГҐ 'a' 'r'  Г­ГҐГІ ГЇГ°Г®ГЎГҐГ«Г , ГІГ® ГЄГ®Г¬Г Г­Г¤Г  Г­ГҐ ГўГҐГ°Г­Г 
 			bad_command = 1;
 		if (bad_command == 1)
 		{
 			printf("Incorrect command!\n");
-			continue;								//идем на новый круг цикла, игнорируя код ниже
+			continue;								//ГЁГ¤ГҐГ¬ Г­Г  Г­Г®ГўГ»Г© ГЄГ°ГіГЈ Г¶ГЁГЄГ«Г , ГЁГЈГ­Г®Г°ГЁГ°ГіГї ГЄГ®Г¤ Г­ГЁГ¦ГҐ
 		}
-		//если команда нормальная, то идем дальше
+		//ГҐГ±Г«ГЁ ГЄГ®Г¬Г Г­Г¤Г  Г­Г®Г°Г¬Г Г«ГјГ­Г Гї, ГІГ® ГЁГ¤ГҐГ¬ Г¤Г Г«ГјГёГҐ
 		switch (kommand)
 		{
 		case 'a':
 		{
-					value = get_value(&kommand_str, strlen(kommand_str), &kod);	//выделяем значение
-					if ((kod != -1) || (strlen(kommand_str)<3))					//если есть ошибка (код равен -1 только при удачном переводе)
-					{															//или значение не введено
-						printf("Incorrect data!\n");							//сообщаем
-						break;													//и выходим
+					value = get_value(&kommand_str, strlen(kommand_str), &kod);	//ГўГ»Г¤ГҐГ«ГїГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ
+					if ((kod != -1) || (strlen(kommand_str)<3))					//ГҐГ±Г«ГЁ ГҐГ±ГІГј Г®ГёГЁГЎГЄГ  (ГЄГ®Г¤ Г°Г ГўГҐГ­ -1 ГІГ®Г«ГјГЄГ® ГЇГ°ГЁ ГіГ¤Г Г·Г­Г®Г¬ ГЇГҐГ°ГҐГўГ®Г¤ГҐ)
+					{															//ГЁГ«ГЁ Г§Г­Г Г·ГҐГ­ГЁГҐ Г­ГҐ ГўГўГҐГ¤ГҐГ­Г®
+						printf("Incorrect data!\n");							//Г±Г®Г®ГЎГ№Г ГҐГ¬
+						break;													//ГЁ ГўГ»ГµГ®Г¤ГЁГ¬
 					}
-					Spisok_add(spisok, value);									//если все хорошо, то добавляем элемент
+					Spisok_add(spisok, value);									//ГҐГ±Г«ГЁ ГўГ±ГҐ ГµГ®Г°Г®ГёГ®, ГІГ® Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІ
 					break;
 		}
 		case 'r':
 		{
-					value = get_value(&kommand_str, strlen(kommand_str), &kod);	//выделяем значение
+					value = get_value(&kommand_str, strlen(kommand_str), &kod);	//ГўГ»Г¤ГҐГ«ГїГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ
 					if ((kod != -1) || (strlen(kommand_str)<3))
 					{
 						printf("Incorrect data!\n");
 						break;
 					}
-					Spisok_remove(spisok, value);							//удаляем элемент
+					Spisok_remove(spisok, value);							//ГіГ¤Г Г«ГїГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІ
 					break;
 		}
 		case 'p':
 		{
-					Spisok_print(spisok);			//печать
+					Spisok_print(spisok);			//ГЇГҐГ·Г ГІГј
 					break;
 		}
-		case 'q':									//если команда выхода
+		case 'q':									//ГҐГ±Г«ГЁ ГЄГ®Г¬Г Г­Г¤Г  ГўГ»ГµГ®Г¤Г 
 		{
-														Spisok_clear(spisok);		//выход
-														getch();					//задержка до нажатия любой кнопки
-														exit(0);							//выход
+														Spisok_clear(spisok);		//ГўГ»ГµГ®Г¤
+														getch();					//Г§Г Г¤ГҐГ°Г¦ГЄГ  Г¤Г® Г­Г Г¦Г ГІГЁГї Г«ГѕГЎГ®Г© ГЄГ­Г®ГЇГЄГЁ
+														exit(0);							//ГўГ»ГµГ®Г¤
 		}
 		}
 	}
