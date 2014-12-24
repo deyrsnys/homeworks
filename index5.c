@@ -1,7 +1,11 @@
+п»ї/*
+Float
+РљРѕР»С‡РёРЅ, 171
+*/
 #include <stdio.h>
 #include <math.h>
 #include <conio.h>
-// Разбить float
+// ГђГ Г§ГЎГЁГІГј float
 
 
 void split_float_way1(int number);
@@ -25,25 +29,25 @@ int main(int argv, char* args[])
 			scanf("%f",&a);
 		    printf("Initial float: %f\n",a);
 
-			// хитрим с указателями
+			// ГµГЁГІГ°ГЁГ¬ Г± ГіГЄГ Г§Г ГІГҐГ«ГїГ¬ГЁ
 			int number = * (int *) & a;
-			// это число пригодится как побитовое представление исходного float	
+			// ГЅГІГ® Г·ГЁГ±Г«Г® ГЇГ°ГЁГЈГ®Г¤ГЁГІГ±Гї ГЄГ ГЄ ГЇГ®ГЎГЁГІГ®ГўГ®ГҐ ГЇГ°ГҐГ¤Г±ГІГ ГўГ«ГҐГ­ГЁГҐ ГЁГ±ГµГ®Г¤Г­Г®ГЈГ® float	
 			split_float_way1(number);
 
 			system("pause");
 		} 
 		else if( ch == '2')
 		{
-			union							// Делаем объединение.
+			union							// Г„ГҐГ«Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­ГЁГҐ.
 			{
 					int number_int;
 					float number_float;
 			} mega_number;
 
 			printf("Enter float number: ");
-			scanf("%f",&(mega_number.number_float));				// вводим флоатовское число
+			scanf("%f",&(mega_number.number_float));				// ГўГўГ®Г¤ГЁГ¬ ГґГ«Г®Г ГІГ®ГўГ±ГЄГ®ГҐ Г·ГЁГ±Г«Г®
 		    printf("Initial float: %f\n",mega_number.number_float);
-			split_float_way1(mega_number.number_int); 				// в функцию передаем int-овское число из объединения
+			split_float_way1(mega_number.number_int); 				// Гў ГґГіГ­ГЄГ¶ГЁГѕ ГЇГҐГ°ГҐГ¤Г ГҐГ¬ int-Г®ГўГ±ГЄГ®ГҐ Г·ГЁГ±Г«Г® ГЁГ§ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­ГЁГї
 			system("pause");
 		}
 		else if( ch == '3')
@@ -52,24 +56,24 @@ int main(int argv, char* args[])
 				float number_float;
 				
 				struct {
-					unsigned mantissa : 23; // Первые 23 бита
-					unsigned order : 8;	// Следующие 8 бит
-					unsigned sign : 1;	// Последний бит, будет отвечать за знак
+					unsigned mantissa : 23; // ГЏГҐГ°ГўГ»ГҐ 23 ГЎГЁГІГ 
+					unsigned order : 8;	// Г‘Г«ГҐГ¤ГіГѕГ№ГЁГҐ 8 ГЎГЁГІ
+					unsigned sign : 1;	// ГЏГ®Г±Г«ГҐГ¤Г­ГЁГ© ГЎГЁГІ, ГЎГіГ¤ГҐГІ Г®ГІГўГҐГ·Г ГІГј Г§Г  Г§Г­Г ГЄ
 				} float_skelet;
 
 			} mega_number2;
 				
 				
 			printf("Enter float number: ");
-			scanf("%f",&mega_number2.number_float);				// Вводим число
+			scanf("%f",&mega_number2.number_float);				// Г‚ГўГ®Г¤ГЁГ¬ Г·ГЁГ±Г«Г®
 		    printf("Initial float: %f\n", mega_number2.number_float);
 			
-			// можно проверить что в них хранится
+			// Г¬Г®Г¦Г­Г® ГЇГ°Г®ГўГҐГ°ГЁГІГј Г·ГІГ® Гў Г­ГЁГµ ГµГ°Г Г­ГЁГІГ±Гї
 			//printf("%d ",mega_number2.float_skelet.sign);
 			//printf("%d ",mega_number2.float_skelet.order);
 			//printf("%d ",mega_number2.float_skelet.mantissa);
 			
-			// Передаем знак, мантиссу, и порядок в функцию.
+			// ГЏГҐГ°ГҐГ¤Г ГҐГ¬ Г§Г­Г ГЄ, Г¬Г Г­ГІГЁГ±Г±Гі, ГЁ ГЇГ®Г°ГїГ¤Г®ГЄ Гў ГґГіГ­ГЄГ¶ГЁГѕ.
 			split_float_way3(mega_number2.float_skelet.sign, mega_number2.float_skelet.order, mega_number2.float_skelet.mantissa);
 
 			system("pause");
@@ -85,19 +89,19 @@ int main(int argv, char* args[])
 
 
 void split_float_way1(int number){
-	// С помощью указателей.
-	// Необходимо получить знак(1бит), порядок(8 бит) и мантиссу(23 бита)
+	// Г‘ ГЇГ®Г¬Г®Г№ГјГѕ ГіГЄГ Г§Г ГІГҐГ«ГҐГ©.
+	// ГЌГҐГ®ГЎГµГ®Г¤ГЁГ¬Г® ГЇГ®Г«ГіГ·ГЁГІГј Г§Г­Г ГЄ(1ГЎГЁГІ), ГЇГ®Г°ГїГ¤Г®ГЄ(8 ГЎГЁГІ) ГЁ Г¬Г Г­ГІГЁГ±Г±Гі(23 ГЎГЁГІГ )
 	
-	// Получим знак
+	// ГЏГ®Г«ГіГ·ГЁГ¬ Г§Г­Г ГЄ
 	int sign = (number >> 31)?-1:1;
 	
 	//printf("%c", sign<0?'-':'+');
 
-	// Следующие 8 бит указывают на порядок
-	int order = ((number >> 23) & (( 1 << 8) - 1)) - 127;			// Получаем эти 8 бит
+	// Г‘Г«ГҐГ¤ГіГѕГ№ГЁГҐ 8 ГЎГЁГІ ГіГЄГ Г§Г»ГўГ ГѕГІ Г­Г  ГЇГ®Г°ГїГ¤Г®ГЄ
+	int order = ((number >> 23) & (( 1 << 8) - 1)) - 127;			// ГЏГ®Г«ГіГ·Г ГҐГ¬ ГЅГІГЁ 8 ГЎГЁГІ
 	//printf("%d \n",order);
 	
-	// Осталось получить мантиссу, на нее отводится 23 бита.
+	// ГЋГ±ГІГ Г«Г®Г±Гј ГЇГ®Г«ГіГ·ГЁГІГј Г¬Г Г­ГІГЁГ±Г±Гі, Г­Г  Г­ГҐГҐ Г®ГІГўГ®Г¤ГЁГІГ±Гї 23 ГЎГЁГІГ .
 	int pre_mantissa = number & ((1 << 23) - 1);
 	
 	//printf("%d \n",pre_mantissa);
@@ -105,20 +109,20 @@ void split_float_way1(int number){
 		//printf("%d",(new_number>>i)&1);
 
 	// http://www.softelectro.ru/ieee754.html
-	// Воспользуемся формулой и найдем мантиссу 
+	// Г‚Г®Г±ГЇГ®Г«ГјГ§ГіГҐГ¬Г±Гї ГґГ®Г°Г¬ГіГ«Г®Г© ГЁ Г­Г Г©Г¤ГҐГ¬ Г¬Г Г­ГІГЁГ±Г±Гі 
 	float mantissa = (float)pre_mantissa/(1<<23);
 	
-	//// Проверка на правильность
-	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // формула с сайта
+	//// ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  ГЇГ°Г ГўГЁГ«ГјГ­Г®Г±ГІГј
+	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // ГґГ®Г°Г¬ГіГ«Г  Г± Г±Г Г©ГІГ 
 
 
-	// Вообще все найдено, теперь вывод на экран
-	// Нужно учесть случаи, когда float есть +-бесконечность, нуль, или NaN
+	// Г‚Г®Г®ГЎГ№ГҐ ГўГ±ГҐ Г­Г Г©Г¤ГҐГ­Г®, ГІГҐГЇГҐГ°Гј ГўГ»ГўГ®Г¤ Г­Г  ГЅГЄГ°Г Г­
+	// ГЌГіГ¦Г­Г® ГіГ·ГҐГ±ГІГј Г±Г«ГіГ·Г ГЁ, ГЄГ®ГЈГ¤Г  float ГҐГ±ГІГј +-ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГј, Г­ГіГ«Гј, ГЁГ«ГЁ NaN
 	
 	printf("Result representation: ");
-	if( !(order+127) && !mantissa )				// Случай нуля
+	if( !(order+127) && !mantissa )				// Г‘Г«ГіГ·Г Г© Г­ГіГ«Гї
 		printf("Zero\n");
-	else if ( order == 128 && !mantissa )			// Бесконечности
+	else if ( order == 128 && !mantissa )			// ГЃГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГЁ
 		printf("%cInfinity\n",sign<0?'-':'+');
 	else if ( order == 128 && mantissa)
 		printf("NaN\n");
@@ -131,35 +135,35 @@ void split_float_way1(int number){
 
 
 void split_float_way2(int number){
- 	// Не нужна, всё делает первая функция
+ 	// ГЌГҐ Г­ГіГ¦Г­Г , ГўГ±Вё Г¤ГҐГ«Г ГҐГІ ГЇГҐГ°ГўГ Гї ГґГіГ­ГЄГ¶ГЁГї
 
 }
 void split_float_way3(int sign, int order, int pre_mantissa){
 	
-	// Получим знак
+	// ГЏГ®Г«ГіГ·ГЁГ¬ Г§Г­Г ГЄ
 	sign = (sign)?-1:1;
 
-	// Корректируем порядок
-	order = order - 127;			// в соответствии с формулой отнимаем 127
+	// ГЉГ®Г°Г°ГҐГЄГІГЁГ°ГіГҐГ¬ ГЇГ®Г°ГїГ¤Г®ГЄ
+	order = order - 127;			// Гў Г±Г®Г®ГІГўГҐГІГ±ГІГўГЁГЁ Г± ГґГ®Г°Г¬ГіГ«Г®Г© Г®ГІГ­ГЁГ¬Г ГҐГ¬ 127
 	//printf("%d \n",order);
 		
 	//printf("%d \n",pre_mantissa);
 
 	// http://www.softelectro.ru/ieee754.html
-	// Воспользуемся формулой и найдем мантиссу 
+	// Г‚Г®Г±ГЇГ®Г«ГјГ§ГіГҐГ¬Г±Гї ГґГ®Г°Г¬ГіГ«Г®Г© ГЁ Г­Г Г©Г¤ГҐГ¬ Г¬Г Г­ГІГЁГ±Г±Гі 
 	float mantissa = (float)pre_mantissa/(1<<23);
 	
-	//// Проверка на правильность
-	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // формула с сайта
+	//// ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  ГЇГ°Г ГўГЁГ«ГјГ­Г®Г±ГІГј
+	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // ГґГ®Г°Г¬ГіГ«Г  Г± Г±Г Г©ГІГ 
 
 
-	// Вообще все найдено, теперь вывод на экран
-	// Нужно учесть случаи, когда float есть +-бесконечность, нуль, или NaN
+	// Г‚Г®Г®ГЎГ№ГҐ ГўГ±ГҐ Г­Г Г©Г¤ГҐГ­Г®, ГІГҐГЇГҐГ°Гј ГўГ»ГўГ®Г¤ Г­Г  ГЅГЄГ°Г Г­
+	// ГЌГіГ¦Г­Г® ГіГ·ГҐГ±ГІГј Г±Г«ГіГ·Г ГЁ, ГЄГ®ГЈГ¤Г  float ГҐГ±ГІГј +-ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГј, Г­ГіГ«Гј, ГЁГ«ГЁ NaN
 	
 	printf("Result representation: ");
-	if( !(order+127) && !mantissa )				// Случай нуля
+	if( !(order+127) && !mantissa )				// Г‘Г«ГіГ·Г Г© Г­ГіГ«Гї
 		printf("Zero\n");
-	else if ( order == 128 && !mantissa )			// Бесконечности
+	else if ( order == 128 && !mantissa )			// ГЃГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГЁ
 		printf("%cInfinity\n",sign<0?'-':'+');
 	else if ( order == 128 && mantissa)
 		printf("NaN\n");
