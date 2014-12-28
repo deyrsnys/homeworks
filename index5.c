@@ -6,6 +6,8 @@ Float
 #include <stdio.h>
 #include <math.h>
 #include <conio.h>
+// Разбить float
+
 
 void split_float_way1(int number);
 void split_float_way2(int number);
@@ -28,25 +30,25 @@ int main(int argv, char* args[])
 			scanf("%f",&a);
 		    printf("Initial float: %f\n",a);
 
-			// õèòðèì ñ óêàçàòåëÿìè
+			// хитрим с указателями
 			int number = * (int *) & a;
-			// ýòî ÷èñëî ïðèãîäèòñÿ êàê ïîáèòîâîå ïðåäñòàâëåíèå èñõîäíîãî float	
+			// это число пригодится как побитовое представление исходного float	
 			split_float_way1(number);
 
 			system("pause");
 		} 
 		else if( ch == '2')
 		{
-			union							// Äåëàåì îáúåäèíåíèå.
+			union							// Делаем объединение.
 			{
 					int number_int;
 					float number_float;
 			} mega_number;
 
 			printf("Enter float number: ");
-			scanf("%f",&(mega_number.number_float));				// ââîäèì ôëîàòîâñêîå ÷èñëî
+			scanf("%f",&(mega_number.number_float));				// вводим флоатовское число
 		    printf("Initial float: %f\n",mega_number.number_float);
-			split_float_way1(mega_number.number_int); 				// â ôóíêöèþ ïåðåäàåì int-îâñêîå ÷èñëî èç îáúåäèíåíèÿ
+			split_float_way1(mega_number.number_int); 				// в функцию передаем int-овское число из объединения
 			system("pause");
 		}
 		else if( ch == '3')
@@ -55,24 +57,24 @@ int main(int argv, char* args[])
 				float number_float;
 				
 				struct {
-					unsigned mantissa : 23; // Ïåðâûå 23 áèòà
-					unsigned order : 8;	// Ñëåäóþùèå 8 áèò
-					unsigned sign : 1;	// Ïîñëåäíèé áèò, áóäåò îòâå÷àòü çà çíàê
+					unsigned mantissa : 23; // Первые 23 бита
+					unsigned order : 8;	// Следующие 8 бит
+					unsigned sign : 1;	// Последний бит, будет отвечать за знак
 				} float_skelet;
 
 			} mega_number2;
 				
 				
 			printf("Enter float number: ");
-			scanf("%f",&mega_number2.number_float);				// Ââîäèì ÷èñëî
+			scanf("%f",&mega_number2.number_float);				// Вводим число
 		    printf("Initial float: %f\n", mega_number2.number_float);
 			
-			// ìîæíî ïðîâåðèòü ÷òî â íèõ õðàíèòñÿ
+			// можно проверить что в них хранится
 			//printf("%d ",mega_number2.float_skelet.sign);
 			//printf("%d ",mega_number2.float_skelet.order);
 			//printf("%d ",mega_number2.float_skelet.mantissa);
 			
-			// Ïåðåäàåì çíàê, ìàíòèññó, è ïîðÿäîê â ôóíêöèþ.
+			// Передаем знак, мантиссу, и порядок в функцию.
 			split_float_way3(mega_number2.float_skelet.sign, mega_number2.float_skelet.order, mega_number2.float_skelet.mantissa);
 
 			system("pause");
@@ -88,19 +90,19 @@ int main(int argv, char* args[])
 
 
 void split_float_way1(int number){
-	// Ñ ïîìîùüþ óêàçàòåëåé.
-	// Íåîáõîäèìî ïîëó÷èòü çíàê(1áèò), ïîðÿäîê(8 áèò) è ìàíòèññó(23 áèòà)
+	// С помощью указателей.
+	// Необходимо получить знак(1бит), порядок(8 бит) и мантиссу(23 бита)
 	
-	// Ïîëó÷èì çíàê
+	// Получим знак
 	int sign = (number >> 31)?-1:1;
 	
 	//printf("%c", sign<0?'-':'+');
 
-	// Ñëåäóþùèå 8 áèò óêàçûâàþò íà ïîðÿäîê
-	int order = ((number >> 23) & (( 1 << 8) - 1)) - 127;			// Ïîëó÷àåì ýòè 8 áèò
+	// Следующие 8 бит указывают на порядок
+	int order = ((number >> 23) & (( 1 << 8) - 1)) - 127;			// Получаем эти 8 бит
 	//printf("%d \n",order);
 	
-	// Îñòàëîñü ïîëó÷èòü ìàíòèññó, íà íåå îòâîäèòñÿ 23 áèòà.
+	// Осталось получить мантиссу, на нее отводится 23 бита.
 	int pre_mantissa = number & ((1 << 23) - 1);
 	
 	//printf("%d \n",pre_mantissa);
@@ -108,20 +110,20 @@ void split_float_way1(int number){
 		//printf("%d",(new_number>>i)&1);
 
 	// http://www.softelectro.ru/ieee754.html
-	// Âîñïîëüçóåìñÿ ôîðìóëîé è íàéäåì ìàíòèññó 
+	// Воспользуемся формулой и найдем мантиссу 
 	float mantissa = (float)pre_mantissa/(1<<23);
 	
-	//// Ïðîâåðêà íà ïðàâèëüíîñòü
-	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // ôîðìóëà ñ ñàéòà
+	//// Проверка на правильность
+	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // формула с сайта
 
 
-	// Âîîáùå âñå íàéäåíî, òåïåðü âûâîä íà ýêðàí
-	// Íóæíî ó÷åñòü ñëó÷àè, êîãäà float åñòü +-áåñêîíå÷íîñòü, íóëü, èëè NaN
+	// Вообще все найдено, теперь вывод на экран
+	// Нужно учесть случаи, когда float есть +-бесконечность, нуль, или NaN
 	
 	printf("Result representation: ");
-	if( !(order+127) && !mantissa )				// Ñëó÷àé íóëÿ
+	if( !(order+127) && !mantissa )				// Случай нуля
 		printf("Zero\n");
-	else if ( order == 128 && !mantissa )			// Áåñêîíå÷íîñòè
+	else if ( order == 128 && !mantissa )			// Бесконечности
 		printf("%cInfinity\n",sign<0?'-':'+');
 	else if ( order == 128 && mantissa)
 		printf("NaN\n");
@@ -134,35 +136,35 @@ void split_float_way1(int number){
 
 
 void split_float_way2(int number){
- 	// Íå íóæíà, âñ¸ äåëàåò ïåðâàÿ ôóíêöèÿ
+ 	// Не нужна, всё делает первая функция
 
 }
 void split_float_way3(int sign, int order, int pre_mantissa){
 	
-	// Ïîëó÷èì çíàê
+	// Получим знак
 	sign = (sign)?-1:1;
 
-	// Êîððåêòèðóåì ïîðÿäîê
-	order = order - 127;			// â ñîîòâåòñòâèè ñ ôîðìóëîé îòíèìàåì 127
+	// Корректируем порядок
+	order = order - 127;			// в соответствии с формулой отнимаем 127
 	//printf("%d \n",order);
 		
 	//printf("%d \n",pre_mantissa);
 
 	// http://www.softelectro.ru/ieee754.html
-	// Âîñïîëüçóåìñÿ ôîðìóëîé è íàéäåì ìàíòèññó 
+	// Воспользуемся формулой и найдем мантиссу 
 	float mantissa = (float)pre_mantissa/(1<<23);
 	
-	//// Ïðîâåðêà íà ïðàâèëüíîñòü
-	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // ôîðìóëà ñ ñàéòà
+	//// Проверка на правильность
+	//// printf("\n%f", (float)(1+mantissa)*(float)sign*(float)pow(2.0,order));  // формула с сайта
 
 
-	// Âîîáùå âñå íàéäåíî, òåïåðü âûâîä íà ýêðàí
-	// Íóæíî ó÷åñòü ñëó÷àè, êîãäà float åñòü +-áåñêîíå÷íîñòü, íóëü, èëè NaN
+	// Вообще все найдено, теперь вывод на экран
+	// Нужно учесть случаи, когда float есть +-бесконечность, нуль, или NaN
 	
 	printf("Result representation: ");
-	if( !(order+127) && !mantissa )				// Ñëó÷àé íóëÿ
+	if( !(order+127) && !mantissa )				// Случай нуля
 		printf("Zero\n");
-	else if ( order == 128 && !mantissa )			// Áåñêîíå÷íîñòè
+	else if ( order == 128 && !mantissa )			// Бесконечности
 		printf("%cInfinity\n",sign<0?'-':'+');
 	else if ( order == 128 && mantissa)
 		printf("NaN\n");
