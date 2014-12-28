@@ -11,17 +11,17 @@ int search_substring(char *substr, char *str);
 
 void main(void)
 {
-	// Ïîèñê ïîäñòðîêè â ñòðîêå
+	// Поиск подстроки в строке
 	char substr[] = "ABdC";
 	char str[] = "LNkdn3KN1kABdaQjdABCkdneqiaQ";
 	
 
 	printf("Intial string 1: %s\nInitial string 2 %s\n", substr, str);
 
-	// Ïîëó÷àåì èíäåêñ íà÷àëà ñòðîêè
+	// Получаем индекс начала строки
 	int index = search_substring(substr,str);
 
-	// Âûâîäèì ðåçóëüòàò ïîèñêà
+	// Выводим результат поиска
 	
 	printf("\nResult: ");
 	if (index >= 0)
@@ -43,10 +43,10 @@ void main(void)
 
 int search_substring(char *substr, char *str)
 {
-	//Àëãîðèòì êíóòà ìîððèñà ïðàòòà
+	//Алгоритм кнута морриса пратта
 	
-	// Øàã 1. Îáúåäèíèì ñòðîêè â îäíó.
-		// Íàéäåì äëèíû ñòðîê
+	// Шаг 1. Объединим строки в одну.
+		// Найдем длины строк
 	int len_substr = strlen(substr);	
 	int len_str = strlen(str);
 	
@@ -54,15 +54,15 @@ int search_substring(char *substr, char *str)
 	strcat(main_str,substr);
 	strcat(main_str,str);
 	
-	// Øàã 2. Ñîçäàåì äèíàìè÷åñêèé ìàññèâ. Äëÿ ñîõðàíåíèÿ ðåçóëüòàòîâ
-	// ïðåôèê ôóíêöèè.	
+	// Шаг 2. Создаем динамический массив. Для сохранения результатов
+	// префик функции.	
 	int* pi = (int *)malloc(len_substr + len_str);
-		// îáíóëÿåì âñå çíà÷åíèÿ â íåì
+		// обнуляем все значения в нем
 	for(int i = 0; i < len_substr + len_str; i++){
 		pi[i] = 0;
 	}
 
-	// Øàã 3. Èñïîëüçóÿ ïðåôèê ôóíêöèþ, èùåì ïîäñòðîêó
+	// Шаг 3. Используя префик функцию, ищем подстроку
 	
 	for(int i = 1; i < len_substr + len_str; i++){
 		int j = pi[i-1];
