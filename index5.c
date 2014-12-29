@@ -6,8 +6,6 @@ Float
 #include <stdio.h>
 #include <math.h>
 #include <conio.h>
-// Разбить float
-
 
 void split_float_way1(int number);
 void split_float_way2(int number);
